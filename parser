@@ -1,0 +1,17 @@
+import requests
+from bs4 import BeautifulSoup as BS 
+
+page = 1
+while True:
+    r = requests.get("https://baucenter.ru/montazhnaya-pena/?PAGEN_1=" + str(page))
+    html = BS(r.content, 'html.parser')
+
+    all_el= html.find_all("div", class_="catalog_item")
+    for el in all_el:
+        title = el.find("span", class_='price-block_price')
+        a = el.find("a", class_="catalog_item_main-block").get('href')
+#        a = el.find("a", class_='_card__title_givrd_1').get('href')
+#        time = el.find("section", class_="_card__date_givrd_1")
+        print(title.text)
+        print("https://baucenter.ru" + str(a))
+    page += 1
